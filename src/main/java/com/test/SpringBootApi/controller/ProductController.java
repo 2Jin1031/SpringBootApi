@@ -20,12 +20,28 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public ResponseEntity<Optional<Product>> getProductById(@PathVariable("id") long id) {
 
+        try {
+            return ResponseEntity.ok(productService.findById(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
 
     }
 
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
 
+        try {
+            ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(productService.save(product));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @PutMapping("/products/{id}")
@@ -33,11 +49,26 @@ public class ProductController {
             @PathVariable("id") long id,
             @RequestBody Product product
     ) {
+        try {
+            ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(productService.update(id, product));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        return null;
     }
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") long id) {
+        try {
+            productService.delete(id);
+            ResponseEntity.noContent();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        return null;
     }
 }
